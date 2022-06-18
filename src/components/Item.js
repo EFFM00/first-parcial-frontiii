@@ -14,30 +14,41 @@ import { Div, H3, P, DivPosition, StockH5 } from "./style/ProductStyle";
 import styled from 'styled-components';
 
 const ButtonC = styled.button`
-border: none;
-padding: 1.5rem 2.5rem;
-border-radius: 0.4rem;
-color: ${(props) => (props.disabled ? "white": "black")};
-background-color: ${(props) => (!props.disabled ? "#bc0099": "gray")};
-cursor: pointer;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.4rem;
+  color: ${(props) => (props.disabled ? "black": "white")};
+  background-color: ${(props) => (!props.disabled ? "#bc0099": "gray")};
+  cursor: ${(props) => (props.cursor==="pointer" ? "pointer": "default")};
+  box-shadow: 4.5px 4.5px 10px 0.5px black;
+  font-size: 1.2rem;
+  font-family: 'Cabin Condensed', sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+`;
+
+const Span = styled.span`
+  color: ${(props) => (props.producto === "agotado" ? "#bd0000": "black")};
 `;
 
 export default function Product({ product, setComprados }) {
   const [producto, setProducto] = useState(product.stock);
   const [comprarBtn, setComprarBtn] = useState("Comprar");
   const [state, setState] = useState(false);
+  const [cursor, setCursor] = useState("pointer");
   
-  
-
   const comprar = () => {
     if(producto >= 1){
       setProducto(prevProducto => prevProducto > 1 ? prevProducto - 1 : "agotado");
       if(producto === 1) {
         setComprarBtn(()=> "Sin stock");
         setState(() => true);
+        setCursor(() => "default");
       }
       setComprados(prevComprados => prevComprados + 1);
       console.log(producto);
+      console.log(state);
+      console.log(cursor);
     } 
 
   }
@@ -46,8 +57,8 @@ export default function Product({ product, setComprados }) {
         <H3>{product.producto.nombre}</H3>
         <P>{product.producto.descripcion}</P>
         <DivPosition>
-          <StockH5>En stock: <span>{producto}</span></StockH5>
-          <ButtonC onClick={()=>comprar()} disabled={state}>{comprarBtn}</ButtonC>  
+          <StockH5>En stock: <Span producto={producto}>{producto}</Span></StockH5>
+          <ButtonC onClick={()=>comprar()} cursor={cursor} disabled={state}>{comprarBtn}</ButtonC>  
         </DivPosition>
     </Div>
   )

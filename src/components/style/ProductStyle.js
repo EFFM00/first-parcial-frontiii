@@ -8,6 +8,7 @@ export const Div = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 10px 10px 25px 0.1px black;
 `;
 
 export const H3 = styled.h3`
